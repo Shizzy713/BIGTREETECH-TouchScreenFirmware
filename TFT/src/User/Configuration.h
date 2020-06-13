@@ -25,7 +25,7 @@
  *
  * Default value is: 1 for LED_OFF
 */
-#define STARTUP_KNOB_LED_COLOR 5         // LED_OFF
+#define STARTUP_KNOB_LED_COLOR 0         // LED_OFF
 #define KEEP_KNOB_LED_COLOR_MARLIN_MODE  // Keeps the LED state in Marlin Mode
 
 /**
@@ -46,7 +46,7 @@
  */
 #define DEFAULT_LCD_BRIGHTNESS      10  // 10: LCD_100_PERCENT - Brightness value from list
 #define DEFAULT_LCD_IDLE_BRIGHTNESS 2   // 2: LCD_10_PERCENT - Brightness value from list
-#define DEFAULT_LCD_IDLE_TIMER      0   // 0: LCD_DIM_OFF
+#define DEFAULT_LCD_IDLE_TIMER      4   // 0: LCD_DIM_OFF
 #define LCD_DIM_CUSTOM_SECONDS      600 // Custom value in seconds. Will be used if LCD_DIM_CUSTOM_SECONDS is set as idle timer.
 
 //===========================================================================
@@ -62,7 +62,7 @@
  *          6: MAGENTA,    7: YELLOW,      8: ORANGE,  9: PURPLE,   10: LIME,  11: BROWN,
  *         12: DARKBLUE,  13: DARKGREEN,  14: GRAY,   15: DARKGRAY
  */
-#define ST7920_BKCOLOR 14
+#define ST7920_BKCOLOR 15
 #define ST7920_FNCOLOR 3
 
 /**
@@ -141,8 +141,8 @@
  *         12: DARKBLUE,  13: DARKGREEN,  14: GRAY,   15: DARKGRAY
  */
 #define TITLE_BACKGROUND_COLOR     1  // Title background color // 0xD928
-#define BACKGROUND_COLOR           1  // Background color // 0x0A29
-#define FONT_COLOR                 0  // Font foreground color
+#define BACKGROUND_COLOR           9  // Background color // 0x0A29
+#define FONT_COLOR                 3  // Font foreground color
 #define REMINDER_FONT_COLOR        2  // Reminder font color, such as: "No print attached", "Busy processing", etc.
 #define VOLUME_REMINDER_FONT_COLOR 5  // Volume reminder font color, such as: "Card inserted", "Card removed"
 #define STATUS_XYZ_BG_COLOR        15 // Backgroud color for X Y Z positon display in Status Screen.
@@ -214,7 +214,7 @@
  * Enable this will send "M500" after "G29" to store leveling value
  * and send "M420 S1" to enable leveling state after startup
  */
-#define AUTO_SAVE_LOAD_LEVELING_VALUE true //to enabled: true | to disabled: false
+#define AUTO_SAVE_LOAD_LEVELING_VALUE false //to enabled: true | to disabled: false
 
 /**
  * Manual Leveling
