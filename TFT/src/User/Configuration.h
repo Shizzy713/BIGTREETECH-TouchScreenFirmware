@@ -141,7 +141,7 @@
  *         12: DARKBLUE,  13: DARKGREEN,  14: GRAY,   15: DARKGRAY
  */
 #define TITLE_BACKGROUND_COLOR     1  // Title background color // 0xD928
-#define BACKGROUND_COLOR           9  // Background color // 0x0A29
+#define BACKGROUND_COLOR           1  // Background color // 0x0A29
 #define FONT_COLOR                 3  // Font foreground color
 #define REMINDER_FONT_COLOR        2  // Reminder font color, such as: "No print attached", "Busy processing", etc.
 #define VOLUME_REMINDER_FONT_COLOR 5  // Volume reminder font color, such as: "Card inserted", "Card removed"
