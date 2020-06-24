@@ -1,6 +1,6 @@
 #ifndef _CONFIGRATION_H_
 #define _CONFIGRATION_H_
-#define CONFIG_VERSION 200404   // Shizzy713 6/13/2020
+#define CONFIG_VERSION 200404   // Shizzy713 6/23/2020
 //===========================================================================
 //============================= General Settings ============================
 //===========================================================================
@@ -68,7 +68,7 @@
 /**
  *  Text displayed at the top of the TFT in Marlin Mode.
  */
-#define ST7920_BANNER_TEXT "RETRO MODE ACTIVATED"
+#define ST7920_BANNER_TEXT "RETRO MODE ENGAGE"
 
 /**
  *  show banner text at the top of the TFT in Marlin Mode.
@@ -142,7 +142,7 @@
  */
 #define TITLE_BACKGROUND_COLOR     1  // Title background color // 0xD928
 #define BACKGROUND_COLOR           1  // Background color // 0x0A29
-#define FONT_COLOR                 3  // Font foreground color
+#define FONT_COLOR                 0  // Font foreground color
 #define REMINDER_FONT_COLOR        2  // Reminder font color, such as: "No print attached", "Busy processing", etc.
 #define VOLUME_REMINDER_FONT_COLOR 5  // Volume reminder font color, such as: "Card inserted", "Card removed"
 #define STATUS_XYZ_BG_COLOR        15 // Backgroud color for X Y Z positon display in Status Screen.
@@ -276,7 +276,7 @@
  * When enable automatic shutdown(Auto Power), when the hotend temperature is higher than this value
  * turn on the fan to cool down, wait for the hotend temperature to be lower than this value, then turn off the power automatically
  */
-#define AUTO_SHUT_DOWN_MAXTEMP 50
+#define AUTO_SHUT_DOWN_MAXTEMP 45
 
 #define SHOW_FAN_PERCENTAGE true // enable to show fan speed as a percentage instead of a value. to enabled: true | to disabled: false
 
@@ -337,12 +337,12 @@
  * Enable Start & End G-code in SETTINGS -> FEATURE menu.
  */
 // Start G-code - run this G-code before starting print
-#define PRINT_START_GCODE "G28 XY R10\n" // Raise Z 10mm before homing X & Y
+//#define PRINT_START_GCODE "G28 XY R10\n" // Raise Z 10mm before homing X & Y
 
 // End G-code - run this G-code after finishing print
-#define PRINT_END_GCODE "G90\nG1 E-4\nG92 E0\nM18\n" // Switch to absolute positioning, reduce filament pressure by performing small retract, reset extruder position, disable steppers
+//#define PRINT_END_GCODE "G90\nG1 E-4\nG92 E0\nM18\n" // Switch to absolute positioning, reduce filament pressure by performing small retract, reset extruder position, disable steppers
 
 // Cancel G-code - run this G-code after canceling print
-#define PRINT_CANCEL_GCODE "G28 XY R10\n" // Home XY and raise Z 10mm
+//#define PRINT_CANCEL_GCODE "G28 XY R10\n" // Home XY and raise Z 10mm
 
 #endif
