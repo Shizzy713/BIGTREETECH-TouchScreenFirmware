@@ -14,7 +14,7 @@ void speedSetSendWaiting(u8 tool, bool isWaiting)
 
 void speedSetPercent(u8 tool, u16 per)
 {
-  percent[tool]=limitValue(SPEED_MIN, per, SPEED_MAX);
+  percent[tool]=NOBEYOND(SPEED_MIN, per, SPEED_MAX);
 }
 
 u16 speedGetPercent(u8 tool)
@@ -46,8 +46,8 @@ void loopSpeed(void)
       if(send_waiting[i] != true)
       {
         send_waiting[i] = true;
-      char *speedCmd[SPEED_NUM] = {"M220","M221"};
-      storeCmd("%s S%d\n",speedCmd[i], percent[i]);
+        const char *speedCmd[SPEED_NUM] = {"M220","M221"};
+        storeCmd("%s S%d\n",speedCmd[i], percent[i]);
       }
     }
 }
