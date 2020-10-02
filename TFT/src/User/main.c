@@ -48,6 +48,7 @@ void Hardware_GenericInit(void)
   readStoredPara(); // Read settings parameter
   LCD_RefreshDirection();  //refresh display direction after reading settings
   scanUpdates();           // scan icon, fonts and config files
+  checkflashSign();       // check font/icon/config signature in SPI flash for update
 
   #ifdef LED_COLOR_PIN
     knob_LED_Init();
@@ -84,12 +85,12 @@ void Hardware_GenericInit(void)
     storePara();
   }
 
-  printSetUpdateWaiting(infoSettings.m27_active);
   #ifdef LCD_LED_PWM_CHANNEL
     Set_LCD_Brightness(LCD_BRIGHTNESS[infoSettings.lcd_brightness]);
   #endif
   GUI_RestoreColorDefault();
   infoMenuSelect();
+  fanControlInit();
 }
 
 int main(void)

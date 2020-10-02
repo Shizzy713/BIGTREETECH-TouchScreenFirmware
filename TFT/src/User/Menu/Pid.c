@@ -1,5 +1,5 @@
 #include "Pid.h"
-#include "Temperature.h"
+#include "includes.h"
 
 //#define ENABLE_PID_STATUS_UPDATE_NOTIFICATION
 
@@ -48,10 +48,24 @@ void pidUpdateStatus(bool succeeded)
   if (pidCounter > 0)                  // if all the PID processes were still not terminated, simply provide a notification
   {
 #ifdef ENABLE_PID_STATUS_UPDATE_NOTIFICATION
+    char tmpBuf[120];
+
     if (succeeded)
-      addToast((char*)textSelect(LABEL_PROCESS_COMPLETED));
+    {
+      sprintf(tmpBuf, "%s %s", textSelect(LABEL_PID_TITLE), textSelect(LABEL_PROCESS_COMPLETED));
+
+      BUZZER_PLAY(sound_notify);
+
+      addToast(DIALOG_TYPE_INFO, tmpBuf);
+    }
     else
-      addToast((char*)textSelect(LABEL_PROCESS_ABORTED));
+    {
+      sprintf(tmpBuf, "%s %s", textSelect(LABEL_PID_TITLE), textSelect(LABEL_PROCESS_ABORTED));
+
+      BUZZER_PLAY(sound_error);
+
+      addToast(DIALOG_TYPE_ERROR, tmpBuf);
+    }
 #endif
   }
   else                                 // if all the PID processes terminated, provide the final dialog
@@ -60,14 +74,21 @@ void pidUpdateStatus(bool succeeded)
 
     if (pidSucceeded)                  // if all the PID processes successfully terminated, allow to save to EEPROM
     {
-      char tmpBuf[120];
-
-      sprintf(tmpBuf, "%s\n %s", textSelect(LABEL_PROCESS_COMPLETED), textSelect(LABEL_EEPROM_SAVE_INFO));
-
       BUZZER_PLAY(sound_success);
 
-      showDialog(DIALOG_TYPE_SUCCESS, textSelect(LABEL_PID_TITLE), (u8*) tmpBuf,
-        textSelect(LABEL_CONFIRM), textSelect(LABEL_CANCEL), saveEepromSettings, NULL, NULL);
+      if (infoMachineSettings.EEPROM == 1)
+      {
+        char tmpBuf[120];
+
+        sprintf(tmpBuf, "%s\n %s", textSelect(LABEL_PROCESS_COMPLETED), textSelect(LABEL_EEPROM_SAVE_INFO));
+
+        showDialog(DIALOG_TYPE_SUCCESS, textSelect(LABEL_PID_TITLE), (u8 *) tmpBuf,
+          textSelect(LABEL_CONFIRM), textSelect(LABEL_CANCEL), saveEepromSettings, NULL, NULL);
+      }
+      else
+      {
+        popupReminder(DIALOG_TYPE_SUCCESS, textSelect(LABEL_PID_TITLE), textSelect(LABEL_PROCESS_COMPLETED));
+      }
     }
     else                               // if at least a PID process failed, provide an error dialog
     {
@@ -95,7 +116,7 @@ void pidCheckTimeout()
 
       BUZZER_PLAY(sound_error);
 
-      popupReminder(DIALOG_TYPE_ERROR, textSelect(LABEL_PID_TITLE), (u8*) tmpBuf);
+      popupReminder(DIALOG_TYPE_ERROR, textSelect(LABEL_PID_TITLE), (u8 *) tmpBuf);
     }
   }
 }
@@ -165,7 +186,7 @@ void pidStart(void)
   pidUpdateCounter();                                                          // update the number of set temperatures (number of PID processes to execute)
   pidTimeout = OS_GetTimeMs() + PID_PROCESS_TIMEOUT;                           // set timeout for overall PID process
 
-  mustStoreCmd("M42 P4 S0\nM42 P5 S255\nM42 P6 S0\n");                         // set LED light to RED
+  mustStoreCmd("M150 R255 U0 B0\n");                                           // set LED light to RED
   mustStoreCmd("M106 S255\n");                                                 // set fan speed to max
   mustStoreCmd("G4 S1\n");                                                     // wait 1 sec
 
@@ -179,7 +200,7 @@ void pidStart(void)
   }
 
   mustStoreCmd("M107\n");                                                      // stop fan
-  mustStoreCmd("M42 P4 S255\nM42 P5 S0\nM42 P6 S0\n");                         // set LED light to GREEN
+  mustStoreCmd("M150 R0 U255 B0\n");                                           // set LED light to GREEN
 
   infoMenu.menu[++infoMenu.cur] = menuPidWait;
 }
@@ -192,14 +213,14 @@ void pidTemperatureReDraw(bool skip_header)
   {
     sprintf(tempstr, "%s    ", pidDisplayID[pidHeater.toolIndex]);
 
-    GUI_DispString(exhibitRect.x0, exhibitRect.y0, (u8 *)tempstr);
+    GUI_DispString(exhibitRect.x0, exhibitRect.y0, (u8 *) tempstr);
   }
 
   sprintf(tempstr, "  %d  ", pidHeater.T[pidHeater.toolIndex].target);
 
   setLargeFont(true);
 
-  GUI_DispStringInPrect(&exhibitRect, (u8 *)tempstr);
+  GUI_DispStringInPrect(&exhibitRect, (u8 *) tempstr);
 
   setLargeFont(false);
 }
@@ -288,7 +309,7 @@ void menuPid(void)
       case KEY_ICON_6:
         if (pidRunning)
         {
-          addToast(DIALOG_TYPE_ERROR, (char*)textSelect(LABEL_PROCESS_RUNNING));
+          addToast(DIALOG_TYPE_ERROR, (char *) textSelect(LABEL_PROCESS_RUNNING));
         }
         else
         {
@@ -296,7 +317,7 @@ void menuPid(void)
 
           if (pidCounter == 0)         // if no temperature was set to a value > 0
           {
-            addToast(DIALOG_TYPE_ERROR, (char*)textSelect(LABEL_INVALID_VALUE));
+            addToast(DIALOG_TYPE_ERROR, (char *) textSelect(LABEL_INVALID_VALUE));
           }
           else
           {
@@ -311,7 +332,6 @@ void menuPid(void)
         break;
 
       default:
-      {
         #if LCD_ENCODER_SUPPORT
           if(encoderPosition)
           {
@@ -329,7 +349,7 @@ void menuPid(void)
             encoderPosition = 0;
           }
         #endif
-      }break;
+        break;
     }
 
     pidCheckTimeout();
